@@ -1,4 +1,4 @@
-module.exports = `            1: UNIQUE_HIDEOUT                                                   : Hideout Construction Kit
+module.exports = `   1: UNIQUE_HIDEOUT                                                   : Hideout Construction Kit
    2: T3_2H_TOOL_TRACKING                                              : Journeyman's Tracking Toolkit
    3: T4_2H_TOOL_TRACKING                                              : Adept's Tracking Toolkit
    4: T5_2H_TOOL_TRACKING                                              : Expert's Tracking Toolkit
