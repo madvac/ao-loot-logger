@@ -1,9 +1,10 @@
-[![Download AO Loot Logger](https://img.shields.io/badge/AO%20Loot%20Logger-Download-blue)](https://github.com/matheussampaio/ao-loot-logger/releases/latest)
+[![Download AO Loot Logger](https://img.shields.io/badge/AO%20Loot%20Logger-Download-blue)](https://github.com/madvaco/ao-loot-logger/releases/latest)
 [![Discord](https://img.shields.io/badge/discord-join-blue)](https://discord.gg/fvNMF2abXr)
 
 # Albion Online Loot Logger
 
-With AO Loot Logger you can write all the loot grabbed by other players to a file. With this file, you can use [Loot Logger Viewer](https://matheus.sampaio.us/ao-loot-logger-viewer) to analyze it.
+With AO Loot Logger you can write all the loot grabbed by other players to a file. With this file, you can use [Loot Logger Viewer](https://loot-logger.ddns.net/ao-loot-logger-viewer) to analyze it. <br>
+Original Loot Logger Viewer is [HERE](https://matheus.sampaio.us/ao-loot-logger-viewer)
 
 **NOTE:** It does not work with a VPN (i.e. Exit Lag) or playing through Geforce Now.
 
@@ -14,12 +15,14 @@ Join the discord server for questions and help: https://discord.gg/fvNMF2abXr
 
 ## Funding
 
-You can always [buy me a coffee](https://www.buymeacoffee.com/MatheusSampaio) or [sponsor me](https://github.com/sponsors/matheussampaio). ❤️
+You can always [buy me a coffee](https://www.buymeacoffee.com/madvac) ❤️ <br>
+Original AO Loot Logger is [HERE](https://github.com/matheussampaio/ao-loot-logger)
+
 
 ## How to Use (Windows)
 
 1. Install [Npcap with WinPcap compatibility](https://nmap.org/npcap).
-2. Download the latest AO Loot Logger for Windows: https://github.com/matheussampaio/ao-loot-logger/releases/latest
+2. Download the latest AO Loot Logger for Windows: https://github.com/madvac/ao-loot-logger/releases/latest
 3. Extract the folder somewhere
 4. Run `ao-loot-logger.cmd`.
 5. The log is written to a file in the same folder as the executable (you can see the full path when AO Loot Logger starts).
@@ -27,7 +30,7 @@ You can always [buy me a coffee](https://www.buymeacoffee.com/MatheusSampaio) or
 ## How to Use (Linux)
 
 1. Install `libpcap-dev`: `sudo apt-get install libpcap-dev`
-2. Download the latest AO Loot Logger for Linux: https://github.com/matheussampaio/ao-loot-logger/releases/latest
+2. Download the latest AO Loot Logger for Linux: https://github.com/madvac/ao-loot-logger/releases/latest
 3. Extract the folder somewhere
 4. Run `ao-loot-logger`.
 5. The log is written to a file in the same folder as the executable (you can see the full path when AO Loot Logger starts).
