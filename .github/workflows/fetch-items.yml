@@ -33,7 +33,7 @@ jobs:
       with:
         base: main
         branch: update-items-fallback
-        commit-message: "feat: update items fallback"
+        commit-message: "fix: update items fallback"
         delete-branch: true
         title: "Update items fallback"
         body: |
