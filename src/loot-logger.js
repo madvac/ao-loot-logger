@@ -2,6 +2,7 @@ const fs = require('fs')
 
 const { red, green } = require('./utils/colors')
 const formatPlayerName = require('./utils/format-player-name')
+const ServerRegion = require('./network/server-region')
 
 class LootLogger {
   constructor() {
@@ -28,7 +29,8 @@ class LootLogger {
       'quantity',
       'looted_from__alliance',
       'looted_from__guild',
-      'looted_from__name'
+      'looted_from__name',
+      'server__region'
     ].join(';')
 
     this.stream.write(header + '\n')
@@ -60,6 +62,9 @@ class LootLogger {
       this.init()
     }
 
+    const server = ServerRegion.getCurrentServer()
+    const serverName = server ? server.name : ''
+
     const line = [
       date.toISOString(),
       lootedBy.allianceName ?? '',
@@ -70,7 +75,8 @@ class LootLogger {
       quantity,
       lootedFrom.allianceName ?? '',
       lootedFrom.guildName ?? '',
-      lootedFrom.playerName
+      lootedFrom.playerName,
+      serverName
     ].join(';')
 
     this.stream.write(line + '\n')

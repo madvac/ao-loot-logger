@@ -16,6 +16,7 @@ const path = require('path')
 
 const { green, red, cyan, yellow } = require('./utils/colors')
 const AlbionNetwork = require('./network/albion-network')
+const ServerRegion = require('./network/server-region')
 const checkNewVersion = require('./check-new-version')
 const DataHandler = require('./data-handler/data-handler')
 const Items = require('./items')
@@ -28,7 +29,8 @@ main()
 async function main() {
   setWindowTitle(Config.TITLE)
 
-  console.info(`${Config.TITLE}\n`)
+  console.info(`${Config.TITLE}
+`)
 
   await Promise.all([checkNewVersion(), Items.init()])
 
@@ -40,16 +42,22 @@ async function main() {
   AlbionNetwork.on('request-data', DataHandler.handleRequestData)
   AlbionNetwork.on('response-data', DataHandler.handleResponseData)
 
+  // Server region detection event
+  AlbionNetwork.on('server-detected', (server) => {
+    console.info(`\n\t${cyan('CURRENT SERVER')}: ${server.name} (${server.region})\n`)
+    setWindowTitle(`[${server.name}] ${Config.TITLE}`)
+  })
+
   AlbionNetwork.on('online', () => {
-    console.info(`\n\t${green('ALBION DETECTED')}. Loot events should be logged.\n`)
-    setWindowTitle(`[ON] ${Config.TITLE}`)
+    console.info(`\n\t${green('ALBION DETECTED')}. Loot events should be logged.`)
+    // Don't set title here, wait for server detection
   })
 
   AlbionNetwork.on('offline', () => {
     console.info(
       `\n\t${red(
         'ALBION NOT DETECTED'
-      )}.\n\n\tIf Albion is running, press "${Config.RESTART_NETWORK_FILE_KEY}" to restart the network listeners or restart AO Loot Logger.\n`
+      )}. \n\n\tIf Albion is running, press "${Config.RESTART_NETWORK_FILE_KEY}" to restart the network listeners or restart AO Loot Logger.\n`
     )
 
     setWindowTitle(`[OFF] ${Config.TITLE}`)

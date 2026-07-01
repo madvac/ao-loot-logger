@@ -11,14 +11,15 @@ async function checkNewVersion() {
   let data
 
   try {
-    const response = await fetch('https://api.github.com/repos/matheussampaio/ao-loot-logger/releases/latest', {
+    const response = await fetch('https://api.github.com/repos/madvac/ao-loot-logger/releases?per_page=1', {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0'
       }
     })
 
     if (response.ok) {
-      data = await response.json()
+      const releases = await response.json()
+      data = releases[0]
     }
   } catch (error) {
     Logger.debug('error fetching github api for version', error)
@@ -33,7 +34,7 @@ async function checkNewVersion() {
     if (isNewVersionAvailable) {
       console.info(
         green(
-          `\nNew AO Loot Logger ${data.tag_name} available: https://github.com/matheussampaio/ao-loot-logger/releases/latest\n\n`
+          `\nNew AO Loot Logger ${data.tag_name} available: https://github.com/madvac/ao-loot-logger/releases/latest\n\n`
         )
       )
     }

@@ -51,6 +51,9 @@ class DataHandler {
         case Config.events.EvOtherGrabbedLoot:
           return EventData.EvOtherGrabbedLoot.handle(event)
 
+        case Config.events.EvTreasureChestUsingFinished:
+          return EventData.EvTreasureChestUsingFinished.handle(event)
+
         case Config.events.EvNewLootChest:
           return EventData.EvNewLootChest.handle(event)
 

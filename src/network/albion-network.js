@@ -3,6 +3,7 @@ const { Cap, decoders } = require('cap')
 const PhotonParser = require('./photon/photon-parser')
 const Logger = require('../utils/logger')
 const { prettyPrintBuffer } = require('../utils/binary')
+const ServerRegion = require('./server-region')
 
 const MAX_SECONDS_BETWEEN_PACKETS = 5
 
@@ -14,6 +15,11 @@ class AlbionNetwork extends PhotonParser {
     this.lastReceivedTime = null
     this.isLive = null
 
+    // Forward ServerRegion's 'server-changed' as our own 'server-detected'
+    ServerRegion.on('server-changed', (server) => {
+      this.emit('server-detected', server)
+    })
+
     setInterval(() => this.checkOffline(), 5001)
 
     process.on('exit', () => {
@@ -24,7 +30,6 @@ class AlbionNetwork extends PhotonParser {
   checkOffline() {
     const lastReceivedPacketIsRecent =
       process.uptime() - this.lastReceivedTime <= MAX_SECONDS_BETWEEN_PACKETS
-
     if (lastReceivedPacketIsRecent) {
       return
     }
@@ -76,6 +81,9 @@ class AlbionNetwork extends PhotonParser {
     this.caps = []
     this.lastReceivedTime = null
     this.isLive = null
+
+    // Reset server region on close
+    ServerRegion.reset()
   }
 
   addListener(info) {
@@ -99,6 +107,7 @@ class AlbionNetwork extends PhotonParser {
 
       ret = decoders.IPV4(buffer, ret.offset)
 
+      const ipv4Info = ret.info
       let packet = null
 
       if (ret.info.protocol === decoders.PROTOCOL.IP.UDP) {
@@ -113,6 +122,9 @@ class AlbionNetwork extends PhotonParser {
             this.isLive = true
             this.emit('online')
           }
+
+          // Detect server region from packet IP addresses
+          ServerRegion.processPacket(ipv4Info)
 
           this.handlePhotonPacket(packet)
         } catch (error) {
