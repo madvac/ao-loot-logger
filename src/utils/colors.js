@@ -18,10 +18,15 @@ function yellow(text) {
   return `\x1b[33m${text}\x1b[0m`
 }
 
+function orange(text) {
+  return `\x1b[38;2;255;165;0m${text}\x1b[0m`
+}
+
 module.exports = {
   green,
   gray,
   red,
   cyan,
-  yellow
+  yellow,
+  orange
 }

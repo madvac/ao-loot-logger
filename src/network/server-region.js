@@ -9,7 +9,7 @@ const { EventEmitter } = require('events')
  *   - East:   5.45.187.x    (Asia / Albion East)
  *   - Europe: 193.169.238.x (Europe)
  */
-const SERVER_CHANGE_DELAY_MS = 3000
+const SERVER_CHANGE_DELAY_MS = 5000
 
 class ServerRegion extends EventEmitter {
   constructor() {

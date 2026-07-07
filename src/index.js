@@ -14,9 +14,8 @@ const LootLogger = require('./loot-logger')
 
 const path = require('path')
 
-const { green, red, cyan, yellow } = require('./utils/colors')
+const { green, red, cyan, orange } = require('./utils/colors')
 const AlbionNetwork = require('./network/albion-network')
-const ServerRegion = require('./network/server-region')
 const checkNewVersion = require('./check-new-version')
 const DataHandler = require('./data-handler/data-handler')
 const Items = require('./items')
@@ -91,7 +90,9 @@ async function main() {
     '',
     `You can always press "${Config.ROTATE_LOGGER_FILE_KEY}" to start a new log file.`,
     '',
-    `Join the Discord server: ${cyan('https://discord.gg/fvNMF2abXr')} (Ctrl + click to open).`
+    `Join the Discord server: ${cyan('https://discord.gg/fvNMF2abXr')} (Ctrl + click to open).`,
+    '',
+    `${orange('AO Loot Logger Viewer can be found here:')} https://loot-logger.ddns.net/ao-loot-logger-viewer/ (Ctrl + click to open).`
   ].join('\n'))
 }
 

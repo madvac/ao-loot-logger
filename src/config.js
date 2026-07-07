@@ -11,8 +11,7 @@ const EVENTS = {
   EvAttachItemContainer: 99,
   EvDetachItemContainer: 100,
   EvCharacterStats: 143,
-  EvOtherGrabbedLoot: 277,
-  EvTreasureChestUsingFinished: 279,
+  EvOtherGrabbedLoot: 279,
   OpJoin: 2,
   OpInventoryMoveItem: 30
 }
