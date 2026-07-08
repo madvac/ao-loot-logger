@@ -12,8 +12,6 @@ process.on('unhandledRejection', async (reason) => {
 
 const LootLogger = require('./loot-logger')
 
-const path = require('path')
-
 const { green, red, cyan, orange } = require('./utils/colors')
 const AlbionNetwork = require('./network/albion-network')
 const checkNewVersion = require('./check-new-version')
@@ -86,13 +84,13 @@ async function main() {
 
   console.info([
     '',
-    `Logs will be written to ${path.join(process.cwd(), LootLogger.logFileName)}`,
+    `Logs will be written to ${LootLogger.logFileName}`,
     '',
     `You can always press "${Config.ROTATE_LOGGER_FILE_KEY}" to start a new log file.`,
     '',
     `Join the Discord server: ${cyan('https://discord.gg/fvNMF2abXr')} (Ctrl + click to open).`,
     '',
-    `${orange('AO Loot Logger Viewer can be found here:')} https://loot-logger.ddns.net/ao-loot-logger-viewer/ (Ctrl + click to open).`
+    `${orange('AO Loot Logger Viewer can be found here:')} ${cyan('https://loot-logger.ddns.net/ao-loot-logger-viewer')} (Ctrl + click to open).`
   ].join('\n'))
 }
 
@@ -122,9 +120,6 @@ function rotateLogFile() {
   LootLogger.createNewLogFileName()
 
   console.info(
-    `\nFrom now on, logs will be written to ${path.join(
-      process.cwd(),
-      LootLogger.logFileName
-    )}. The file is only created when the first loot event is detected.\n`
+    `\nFrom now on, logs will be written to ${LootLogger.logFileName}. The file is only created when the first loot event is detected.\n`
   )
 }

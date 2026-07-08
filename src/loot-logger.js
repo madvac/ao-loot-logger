@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 const { red, green } = require('./utils/colors')
 const formatPlayerName = require('./utils/format-player-name')
@@ -54,7 +55,7 @@ class LootLogger {
       .map((n) => n.toString().padStart(2, '0'))
       .join('-')
 
-    this.logFileName = `loot-events-${datetime}.txt`
+    this.logFileName = path.join(__dirname, '..', '..', `loot-events-${datetime}.txt`)
   }
 
   write({ date, itemId, quantity, itemName, lootedBy, lootedFrom }) {

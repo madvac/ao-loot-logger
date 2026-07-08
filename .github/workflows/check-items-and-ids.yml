@@ -1,0 +1,112 @@
+name: Check items fallback, events and operation IDs
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+jobs:
+  check-and-update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Download upstream event and operation definitions
+        run: |
+          curl -fsSL -o /tmp/eventtype_string.go \
+            https://raw.githubusercontent.com/ao-data/albiondata-client/refs/heads/master/client/eventtype_string.go
+          curl -fsSL -o /tmp/operationtype_string.go \
+            https://raw.githubusercontent.com/ao-data/albiondata-client/refs/heads/master/client/operationtype_string.go
+
+      - name: Update items fallback
+        run: |
+          echo "module.exports = \`$(curl -sSL https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.txt)\`" > src/items-fallback.js
+
+      - name: Check and update event/operation IDs in config.js
+        run: |
+          python3 << 'PYEOF'
+          import re
+
+          CONFIG_PATH = "src/config.js"
+
+          with open(CONFIG_PATH, "r") as f:
+              content = f.read()
+
+          # Extract the current EVENTS block
+          match = re.search(r"const EVENTS = \{(.*?)\};", content, re.DOTALL)
+          if not match:
+              print("ERROR: EVENTS block not found in config.js")
+              exit(1)
+
+          events_block = match.group(1)
+
+          # Build lookup of current values
+          current = {}
+          for line in events_block.split(","):
+              line = line.strip()
+              if not line:
+                  continue
+              key, val = line.split(":")
+              current[key.strip()] = int(val.strip())
+
+          # Keys we track from upstream
+          tracked = [
+              "EvInventoryPutItem", "EvNewCharacter", "EvNewEquipmentItem",
+              "EvNewSiegeBannerItem", "EvNewSimpleItem", "EvNewLoot",
+              "EvAttachItemContainer", "EvDetachItemContainer", "EvCharacterStats",
+              "EvOtherGrabbedLoot", "EvTreasureChestUsingFinished",
+              "OpJoin", "OpInventoryMoveItem"
+          ]
+
+          # Parse upstream event IDs from Go file
+          upstream = {}
+          with open("/tmp/eventtype_string.go", "r") as f:
+              for line in f:
+                  m = re.search(r"_ = x\[ev(\w+)-(\d+)\]", line)
+                  if m:
+                      name = "Ev" + m.group(1)
+                      upstream[name] = int(m.group(2))
+
+          # Parse upstream operation IDs from Go file
+          with open("/tmp/operationtype_string.go", "r") as f:
+              for line in f:
+                  m = re.search(r"_ = x\[op(\w+)-(\d+)\]", line)
+                  if m:
+                      name = "Op" + m.group(1)
+                      upstream[name] = int(m.group(2))
+
+          # Compare and update if needed
+          changed = False
+          for key in tracked:
+              if key not in upstream:
+                  continue
+              if current.get(key) != upstream[key]:
+                  print(f"MISMATCH: {key} = {current.get(key)} -> {upstream[key]}")
+                  content = re.sub(
+                      rf"(\b{re.escape(key)}\s*:\s*)\d+",
+                      rf"\g<1>{upstream[key]}",
+                      content
+                  )
+                  changed = True
+
+          if changed:
+              with open(CONFIG_PATH, "w") as f:
+                  f.write(content)
+          PYEOF
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: update items fallback and sync event/operation IDs"
+            git push
+          else
+            echo "No changes to commit"
+          fi
