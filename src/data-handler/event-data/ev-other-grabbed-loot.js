@@ -21,7 +21,18 @@ function handle(event) {
     return
   }
 
-  const { itemId, itemName } = Items.get(itemNumId)
+  // Item may be missing from items.txt (e.g. new items after a game update).
+  // Log it with a fallback name instead of dropping the loot event.
+  const item = Items.get(itemNumId)
+
+  if (item == null) {
+    Logger.warn('item num id not found', itemNumId)
+  }
+
+  const { itemId, itemName } = item ?? {
+    itemId: `UNKNOWN_${itemNumId}`,
+    itemName: `Unknown Item (${itemNumId})`
+  }
 
   const date = new Date()
 

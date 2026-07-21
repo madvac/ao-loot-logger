@@ -56,18 +56,22 @@ function parse(event) {
     throw new ParserError('EvNewEquipmentItem has invalid quantity parameter')
   }
 
-  const craftedBy = event.parameters[5]
+  // Parameter layout (current game version):
+  //   5: numeric value (optional, purpose unknown)
+  //   6: craftedBy (string, absent for non-crafted items e.g. mob drops)
+  //   7: quality, 8: durability, 9: spells, 10: passives
+  const craftedBy = event.parameters[6]
 
-  if (typeof craftedBy !== 'string') {
+  if (craftedBy != null && typeof craftedBy !== 'string') {
     throw new ParserError('EvNewEquipmentItem has invalid craftedBy parameter')
   }
 
-  const quality = event.parameters[6] ?? 1
-  const durability = event.parameters[7] ?? 0
-  const spells = event.parameters[8]
-  const passives = event.parameters[9]
+  const quality = event.parameters[7] ?? 1
+  const durability = event.parameters[8] ?? 0
+  const spells = event.parameters[9]
+  const passives = event.parameters[10]
 
   return { objectId, itemNumId, quantity, craftedBy, quality, durability, spells, passives }
 }
 
-module.exports = { name, handle, parse }
+module.exports = { name, handle, parse }  

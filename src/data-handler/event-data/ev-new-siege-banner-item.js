@@ -34,39 +34,37 @@ function handle(event) {
     loot.quantity = quantity
   }
 
-  Logger.debug('EvNewEquipmentItem', loot, event.parameters)
+  Logger.debug('EvNewSiegeBannerItem', loot, event.parameters)
 }
 
 function parse(event) {
   const objectId = event.parameters[0]
 
   if (typeof objectId !== 'number') {
-    throw new ParserError('EvNewEquipmentItem has invalid objectId parameter')
+    throw new ParserError('EvNewSiegeBannerItem has invalid objectId parameter')
   }
 
   const itemNumId = event.parameters[1]
 
   if (typeof itemNumId !== 'number') {
-    throw new ParserError('EvNewEquipmentItem has invalid itemNumId parameter')
+    throw new ParserError('EvNewSiegeBannerItem has invalid itemNumId parameter')
   }
 
   const quantity = event.parameters[2]
 
   if (typeof quantity !== 'number') {
-    throw new ParserError('EvNewEquipmentItem has invalid quantity parameter')
+    throw new ParserError('EvNewSiegeBannerItem has invalid quantity parameter')
   }
 
-  const craftedBy = event.parameters[5]
+  // craftedBy moved from index 5 to 6 in the current game version
+  // and is absent for non-crafted items
+  const craftedBy = event.parameters[6]
 
-  if (typeof craftedBy !== 'string') {
-    throw new ParserError('EvNewEquipmentItem has invalid craftedBy parameter')
+  if (craftedBy != null && typeof craftedBy !== 'string') {
+    throw new ParserError('EvNewSiegeBannerItem has invalid craftedBy parameter')
   }
 
-  return {
-    objectId,
-    itemNumId,
-    quantity
-  }
+  return { objectId, itemNumId, quantity }
 }
 
 module.exports = { name, handle, parse }

@@ -11,6 +11,11 @@ class LootLogger {
     this.logFileName = null
 
     this.createNewLogFileName()
+
+    // Register the exit handler only once, not on every log file rotation
+    process.on('exit', () => {
+      this.close()
+    })
   }
 
   init() {
@@ -35,10 +40,6 @@ class LootLogger {
     ].join(';')
 
     this.stream.write(header + '\n')
-
-    process.on('exit', () => {
-      this.close()
-    })
   }
 
   createNewLogFileName() {

@@ -2,7 +2,7 @@ const { EventEmitter } = require('events')
 
 const BufferReader = require('../../utils/buffer-reader')
 const Protocol18 = require('../protocol18/protocol18')
-const { CrcCalculator } = require('../protocol16/crc-calculator')
+const { CrcCalculator } = require('../protocol18/crc-calculator')
 const { COMMAND_TYPE, MESSAGE_TYPE } = require('./constants')
 const Logger = require('../../utils/logger')
 

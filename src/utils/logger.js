@@ -28,7 +28,7 @@ const logger = winston.createLogger({
     new winston.transports.File({
       level: isProd() ? 'error' : 'debug',
       maxFiles: 2,
-      maxsize: 1024 * 1024 * 5, // 10mb
+      maxsize: 1024 * 1024 * 5, // 5MB
       tailable: true,
       filename: 'debug-logs.txt',
       zippedArchive: true,

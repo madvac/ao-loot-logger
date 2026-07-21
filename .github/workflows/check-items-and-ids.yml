@@ -12,7 +12,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           token: ${{ secrets.GH_TOKEN }}
 
@@ -25,7 +25,16 @@ jobs:
 
       - name: Update items fallback
         run: |
-          echo "module.exports = \`$(curl -sSL https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.txt)\`" > src/items-fallback.js
+          # Download items.txt. On failure (HTTP error, empty or invalid content)
+          # keep the existing fallback untouched so no garbage gets committed.
+          if curl -fsSL -o /tmp/items.txt \
+              https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.txt \
+            && [ -s /tmp/items.txt ] \
+            && grep -qE '^[0-9]+[[:space:]]*:' /tmp/items.txt; then
+            echo "module.exports = \`$(cat /tmp/items.txt)\`" > src/items-fallback.js
+          else
+            echo "WARNING: items.txt download or validation failed, keeping existing fallback"
+          fi
 
       - name: Check and update event/operation IDs in config.js
         run: |
@@ -59,8 +68,7 @@ jobs:
               "EvInventoryPutItem", "EvNewCharacter", "EvNewEquipmentItem",
               "EvNewSiegeBannerItem", "EvNewSimpleItem", "EvNewLoot",
               "EvAttachItemContainer", "EvDetachItemContainer", "EvCharacterStats",
-              "EvOtherGrabbedLoot", "EvTreasureChestUsingFinished",
-              "OpJoin", "OpInventoryMoveItem"
+              "EvOtherGrabbedLoot", "OpJoin", "OpInventoryMoveItem"
           ]
 
           # Parse upstream event IDs from Go file

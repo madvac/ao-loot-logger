@@ -51,11 +51,11 @@ class DataHandler {
         case Config.events.EvOtherGrabbedLoot:
           return EventData.EvOtherGrabbedLoot.handle(event)
 
-        case Config.events.EvNewLootChest:
+         case Config.events.EvNewLootChest:
           return EventData.EvNewLootChest.handle(event)
 
         // case Config.events.EvUpdateLootChest:
-        //   return EventData.EvUpdateLootChest.handle(event)
+        //  return EventData.EvUpdateLootChest.handle(event)
 
         default:
           if (process.env.LOG_UNPROCESSED) {
@@ -64,9 +64,9 @@ class DataHandler {
       }
     } catch (error) {
       if (error instanceof ParserError) {
-        // Logger.warn(error, event)
+        Logger.warn(error, event)
       } else {
-        // Logger.error(error, event)
+        Logger.error(error, event)
       }
     }
   }

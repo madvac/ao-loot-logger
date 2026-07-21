@@ -38,7 +38,7 @@ function handle(event) {
       })
     }
 
-    MemoryStorage.loots.deleteById(loot.id)
+    MemoryStorage.loots.deleteById(loot.objectId)
     delete container.items[fromSlot]
 
     if (loot.owner == null) {
