@@ -104,9 +104,33 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          if ! git diff --cached --quiet; then
-            git commit -m "fix: update items fallback and sync event/operation IDs"
-            git push
-          else
+
+          if git diff --cached --quiet; then
             echo "No changes to commit"
+            exit 0
           fi
+
+          # Detect which files actually changed
+          ITEMS_CHANGED=false
+          IDS_CHANGED=false
+          if git diff --cached --name-only | grep -qx "src/items-fallback.js"; then
+            ITEMS_CHANGED=true
+          fi
+          if git diff --cached --name-only | grep -qx "src/config.js"; then
+            IDS_CHANGED=true
+          fi
+
+          # Commit message rules:
+          # - only items-fallback changed          -> feat:
+          # - only event/operation IDs changed     -> feat!:
+          # - both changed                         -> feat!:
+          if [ "$IDS_CHANGED" = true ] && [ "$ITEMS_CHANGED" = true ]; then
+            MSG="feat!: update items fallback and sync event/operation IDs"
+          elif [ "$IDS_CHANGED" = true ]; then
+            MSG="feat!: sync event/operation IDs"
+          else
+            MSG="feat: update items fallback"
+          fi
+
+          git commit -m "$MSG"
+          git push
