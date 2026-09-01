@@ -10,7 +10,7 @@ class Items {
 
     try {
       const response = await fetch(
-        'https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.txt'
+        'https://raw.githubusercontent.com/ao-data/ao-bin-dumps/master/formatted/items.xxx'
       )
 
       if (!response.ok) {
