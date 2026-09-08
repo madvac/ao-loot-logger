@@ -137,7 +137,7 @@ jobs:
           elif [ "$IDS_CHANGED" = true ]; then
             MSG="feat!: sync event/operation IDs"
           else
-            MSG="feat: update items fallback"
+            MSG="fix: update items fallback"
           fi
 
           git commit -m "$MSG"
