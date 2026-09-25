@@ -6,7 +6,7 @@ class Items {
   }
 
   async init() {
-    let data = ''
+    let data
 
     try {
       const response = await fetch(

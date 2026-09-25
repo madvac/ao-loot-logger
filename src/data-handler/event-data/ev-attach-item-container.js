@@ -8,7 +8,7 @@ const name = 'EvAttachItemContainer'
 function handle(event) {
   Logger.debug('EvAttachItemContainer', event.parameters)
 
-  const { id, uuid, inventory, slots } = parse(event)
+  const { id, uuid, inventory } = parse(event)
 
   let container =
     MemoryStorage.containers.getByUUID(uuid) ??
