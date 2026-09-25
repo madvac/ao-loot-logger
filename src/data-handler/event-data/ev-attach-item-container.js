@@ -65,7 +65,7 @@ function parse(event) {
     throw new ParserError('EvAttachItemContainer has invalid inventory parameter')
   }
 
-  const slots = event.parameters[4]
+  const slots = event.parameters[5]
 
   if (typeof slots !== 'number') {
     throw new ParserError('EvAttachItemContainer has invalid slots parameter')
