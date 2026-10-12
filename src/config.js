@@ -10,8 +10,8 @@ const EVENTS = {
   EvNewLoot: 98,
   EvAttachItemContainer: 99,
   EvDetachItemContainer: 100,
-  EvCharacterStats: 143,
-  EvOtherGrabbedLoot: 279,
+  EvCharacterStats: 142,
+  EvOtherGrabbedLoot: 278,
   OpJoin: 2,
   OpInventoryMoveItem: 30
 }
