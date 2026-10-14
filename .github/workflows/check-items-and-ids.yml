@@ -133,7 +133,7 @@ jobs:
           # - only event/operation IDs changed     -> feat!:
           # - both changed                         -> feat!:
           if [ "$IDS_CHANGED" = true ] && [ "$ITEMS_CHANGED" = true ]; then
-            MSG="feat!: update items fallback and sync event/operation IDs"
+            MSG="feat: update items fallback and sync event/operation IDs"
           elif [ "$IDS_CHANGED" = true ]; then
             MSG="feat: sync event/operation IDs"
           else
